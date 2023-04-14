@@ -1,1 +1,1 @@
-# SNPs_discovery_for_Fluidigm
+# SNPs-discovery-for-Fluidigm
