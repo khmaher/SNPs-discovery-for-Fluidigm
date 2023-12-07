@@ -413,13 +413,12 @@
     <br><br>
   An example of how to run 'trimmomatic' can be found below.
 
-  ```  
+  ```   
  qsub 04_trimmomatic.sh -f _1.fastq.gz -r _2.fastq.gz \
  -k ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:12 \
  -s SLIDINGWINDOW:4:30 \
  -m MINLEN:80
- ```
-test
+  ``` 
   
  </details>
  <br>
