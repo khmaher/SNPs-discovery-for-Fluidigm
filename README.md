@@ -532,7 +532,8 @@
   <br>
   
  <details><summary><font size="6"><b>11) Filter VCF file and extract SNP data</b></font></summary>
-  
+  <br>
+  <br>    
  The next step is to clean the VCF so we retain only high quality SNP sites we can be confident in.
  
  The following script keeps only biallelic SNPs. It then filters to remove SNPs informed by less than a user specified number of reads, quality threshold and genotyped for less than a specified number of individuals.
@@ -561,10 +562,30 @@
  
  
  <details><summary><font size="6"><b>12) Make files for D3 portal </b></font></summary>
+  <br>
+  <br>    
+  We are now ready to prepare the file needed for primer design for the Fluidigm D3 design portal. The D3 User Guide Instructions can be downloaded [here](https://d3.standardbio.com/account/login).
+  <br> 
+  To make the files you need R and R Studio installed on your computer. Once these are installed download the two files in the 'primer_design' directory onto your computer and the script 10_make_primer_file.R.
+  You can then use the 10_make_primer_file.R script to make the final output file for SNP design. Follow the instructions contained in the R script to update the names of your files. 
+  You should now be ready to submit the final file for primer design.
+  
   </details>
   <br>  
  
- <details><summary><font size="6"><b>13) Submit sequence data to the D3 portal for SNP design and generate a quote.</b></font></summary>
+ <details><summary><font size="6"><b>13) Submit sequence data to the D3 design portal for primer design and generate a quote.</b></font></summary>
   <br>
   <br>    
+   First make an account for the [D3 design portal](https://d3.standardbio.com/account/login).
+   I recommend you read through the D3 User Guide you downloaded in the previous step but the steps are summarised below.
+   
+   - Log into your account on the D3 portal. 
+   - click `+ NEW PANEL`
+   - `SNP Type™ Assays - for SNP genotyping` -> `NEXT`
+   - `New Panel` -> `NEXT`
+   - `Others (Others - none - none)` -> `NEXT`
+   - `No SNP Masking` -> `NEXT`
+   - `Panel Properties - Panel Name`: Give your panel a sensible name -> `FINISH`
+   - Click `FILE UPLOAD` -> `choose file` and select the file you just made in R.
+   
  
