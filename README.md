@@ -295,8 +295,8 @@
   cp SNPs-discovery-for-Fluidigm/scripts/* /fastdata/$USER/my_project/scripts
   rm -rf SNPs-discovery-for-Fluidigm
   ```
-   <br>
-   <br>
+   </details>
+  <br>
  
  <details><summary><font size="6"><b>4)  Download reference genome</b></font></summary>
   <br>
@@ -319,6 +319,8 @@
   ```
  When the script has finished running you should have a genome and index files in your genome directory. 
  
+ </details>
+  <br>
   <details><summary><font size="6"><b>5)  Download data </b></font></summary>
   <br>
   <br>
@@ -338,11 +340,11 @@
    <br>
      
   Once this job is run your paired end SRR fastq files should be located in your 'raw_data' directory. 
-   <br>
-   <br>
-    
+  
+  </details>
+  <br> 
        
- <details><summary><font size="6"><b>7)  QC and data trimming</b></font></summary>
+ <details><summary><font size="6"><b>6)  QC and data trimming</b></font></summary>
   <br>
   <br>    
  
@@ -417,11 +419,11 @@
  -s SLIDINGWINDOW:4:30 \
  -m MINLEN:80
   ```
-   <br>
-   <br>
+  </details>
+  <br>
    
    
- <details><summary><font size="6"><b>8)  Re-check quality</b></font></summary>
+ <details><summary><font size="6"><b>7)  Re-check quality</b></font></summary>
   <br>
   <br> 
 
@@ -433,10 +435,11 @@
   ```   
   <br><br>
   If you are not satisfied with the quality or number of reads retained after filtering you can go back to the trimmomatic step and repeat the quality control but changing the parameters.
-  <br>
+  
+  </details>
   <br>
   
- <details><summary><font size="6"><b>9) Align short reads to the reference genome</b></font></summary>
+ <details><summary><font size="6"><b>8) Align short reads to the reference genome</b></font></summary>
   <br>
   <br>  
  
@@ -456,11 +459,11 @@
   ```   
  qsub 06_align.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ```  
-  <br>
+  </details>
   <br>
  
    
- <details><summary><font size="6"><b>10)  Clean BAM files</b></font></summary>
+ <details><summary><font size="6"><b>9)  Clean BAM files</b></font></summary>
   <br>
   <br>    
  Now we have our BAM files we can use the samtools command flagstat to find information on how the reads mapped. 
@@ -476,10 +479,10 @@
  qsub 07_clean_bam.sh 
   ```  
   We should now have a BAM file with all unmapped reads removed. We can now proceed onto SNP calling.
-  <br>
+  </details>
   <br>
   
- <details><summary><font size="6"><b>11) Call SNPs</b></font></summary>
+ <details><summary><font size="6"><b>10) Call SNPs</b></font></summary>
   <br>
   <br>    
   We are now ready to start our SNP calling. To do this we will use [BCFtools](https://samtools.github.io/bcftools/bcftools.html).
@@ -512,20 +515,21 @@
   ```  
  qsub 08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz -o name_of_organism -a 20 -b 20
   ```   
+  </details>
   <br>
-  <br> 
   
- <details><summary><font size="6"><b>12) Filter VCF file and extract SNP data</b></font></summary>
-  <br>
+ <details><summary><font size="6"><b>11) Filter VCF file and extract SNP data</b></font></summary>
+  
+  </details>
   <br>    
  
  
  
- <details><summary><font size="6"><b>13) Make files for D3 portal </b></font></summary>
-  <br>
-  <br>    
+ <details><summary><font size="6"><b>12) Make files for D3 portal </b></font></summary>
+  </details>
+  <br>  
  
- <details><summary><font size="6"><b>14) Submit sequence data to the D3 portal for SNP design and generate a quote.</b></font></summary>
+ <details><summary><font size="6"><b>13) Submit sequence data to the D3 portal for SNP design and generate a quote.</b></font></summary>
   <br>
   <br>    
  
