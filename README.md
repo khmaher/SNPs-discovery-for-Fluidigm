@@ -579,7 +579,9 @@
   We are now ready to prepare the file needed for primer design for the Fluidigm D3 design portal. The D3 User Guide Instructions can be downloaded [here](https://d3.standardbio.com/account/login).
   
   <br> 
+  
   To make the files you need [R](https://www.r-project.org) and [R Studio](https://posit.co/download/rstudio-desktop/) installed on your computer. 
+  
   <br> 
   Once these are installed download the two files in the 'primer_design' directory onto your computer and the script '10_make_primer_file.R'.
   You can then use the '10_make_primer_file.R' script to make the final output file for SNP design. Follow the instructions contained in the R script to update the names of your files. 
@@ -591,8 +593,10 @@
  
  <details><summary><font size="6"><b>13) Submit sequence data to the D3 design portal for primer design and generate a quote.</b></font></summary>
   <br>
-  <br>    
-   First make an account for the [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) [D3 design portal](https://d3.standardbio.com/account/login).
+  <br>  
+    
+   First make an account for the [D3 design portal](https://d3.standardbio.com/account/login).
+   
    <br> 
    I recommend you read through the D3 User Guide you downloaded in the previous step but the steps are summarised below.
    
