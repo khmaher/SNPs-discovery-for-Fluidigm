@@ -412,6 +412,9 @@
   - MINLEN: This specifies the minimum length of a read to keep; any reads shorter than 50 bp are discarded.
     <br><br>
   An example of how to run 'trimmomatic' can be found below.
+ <br><br>
+  
+   <br>
 
   ```   
  qsub 04_trimmomatic.sh -f _1.fastq.gz -r _2.fastq.gz \
@@ -428,7 +431,9 @@
   <br> 
 
   Now we have run trimmomatic we can check how successful our quality control has been but running fastQC and MultiQC again.
-  <br><br>  
+   <br><br>
+  
+   <br> 
 
   ```   
  qsub 05_fastqc2.sh
@@ -454,7 +459,9 @@
  <br><br>
   <b>The command line argument you must supply is:</b><br>
   - the name of your reference genome (-g)
-  <br><br>
+   <br><br>
+  
+   <br>
  
   ```   
  qsub 06_align.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
@@ -472,9 +479,9 @@
  The flagstat results can be viewed in the directory 'flagstat' and the clean BAM files are in the 'clean_aligned' directory.
  
  To run the BAM cleaning submit the script as below.
+  <br><br>
   
-  <br>
-  <br>
+   <br>
   ```  
  qsub 07_clean_bam.sh 
   ```  
@@ -510,7 +517,9 @@
    <br><br>
   <b>The command line argument you must supply is:</b><br>
   - the name you want to call your VCF (-o)
-  <br><br>
+   <br><br>
+  
+   <br>
  
   ```  
  qsub 08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz -o name_of_organism -a 20 -b 20
