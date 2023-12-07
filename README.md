@@ -576,6 +576,7 @@
  <details><summary><font size="6"><b>12) Make files for D3 portal </b></font></summary>
   <br>
   <br>    
+  
   We are now ready to prepare the file needed for primer design for the Fluidigm D3 design portal. The D3 User Guide Instructions can be downloaded [here](https://d3.standardbio.com/account/login).
   
   <br> 
