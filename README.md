@@ -419,9 +419,9 @@
  -s SLIDINGWINDOW:4:30 \
  -m MINLEN:80
   ```
-  </details>
-  <br>
-   
+  
+ </details>
+ <br>
    
  <details><summary><font size="6"><b>7)  Re-check quality</b></font></summary>
   <br>
