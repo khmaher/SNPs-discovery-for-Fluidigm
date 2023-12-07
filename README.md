@@ -481,9 +481,10 @@
   <br><br>
   
    <br>
+  
   ```  
- qsub 07_clean_bam.sh 
- ```  
+ qsub 07_clean_bam.sh ```
+   
   <br><br>
   
    <br>
