@@ -217,7 +217,7 @@
   Ensure to copy the data into your '/fastdata/<user>my_project/raw_data folder' and genome into 
   '/fastdata/<user>my_project/genome folder'.
   
-  Another option is to download the data from a data repository such as the [NCBI SRA.](https://www.ncbi.nlm.nih.gov/sra) 
+  Another option is to download the data from a data repository such as the [NCBI SRA.](https://www.ncbi.nlm.nih.gov/sra). More on this below.
 
   Run 'ls' on your 'raw_data' folder and you should see something like the following
   
@@ -533,9 +533,31 @@
   
  <details><summary><font size="6"><b>11) Filter VCF file and extract SNP data</b></font></summary>
   
+ The next step is to clean the VCF so we retain only high quality SNP sites we can be confident in.
+ 
+ The following script keeps only biallelic SNPs. It then filters to remove SNPs informed by less than a user specified number of reads, quality threshold and genotyped for less than a specified number of individuals.
+ Users pick a frequency in which to remove variants below a certain allele frequency, as these ones are difficult to tell apart from sequencing errors.
+ Remove sites with an average genotype depth higher than a user specified number.
+ To keep only the most diverse SNP sites we also filter to keep only sites which have called at least one individual that is homozygous for the reference, one that is homozygous for the alternate and one heterozygous individual.
+ <br>  
+ The user then specifies how many SNPs they want to randomly extract from the VCF to take forward for primer design.
+ 
+ <b> You must supply the command line with:</b><br>
+  - minimum depth needed to retain a SNP site (-r)
+  - the minimum quality threshold for a SNP to be retained (all SNPs with a lower quality score will be excluded) (-q)
+  - the minimum number of individuals typed to retain a SNP (-i)
+  - the MAF (-m)
+  - exclude sites where the average genotype depth is below this threshold (-a)
+  - number of SNPs to retain for primer design (-n)
+  - the name of the genome which was used to align the data (-g)
+  <br><br>
+  <br>
+  
+  ```
+  qsub 09_filter_vcf.sh -r 3 -q 20 -i 2 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
+  ```
   </details>
   <br>    
- 
  
  
  <details><summary><font size="6"><b>12) Make files for D3 portal </b></font></summary>
