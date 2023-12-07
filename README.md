@@ -418,7 +418,8 @@
  -k ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:12 \
  -s SLIDINGWINDOW:4:30 \
  -m MINLEN:80
-  ```
+ ```
+test
   
  </details>
  <br>
