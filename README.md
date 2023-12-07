@@ -498,10 +498,12 @@
   <br>    
   We are now ready to start our SNP calling. To do this we will use [BCFtools](https://samtools.github.io/bcftools/bcftools.html).
   This SNP calling script first uses 'samtools faidx' to index the genome. This will produce a '.fai' index file.
+  <br> 
   If your genome file is gzipped we first need to unzip this as samtools faidx does not work with gzipped files.
   <br>  
   To do this type (where GCA_017639245.1_MMon_1.0_genomic.fna.gz is your genome name):
   <br>  
+  <br> 
   
   ``` 
   gunzip GCA_017639245.1_MMon_1.0_genomic.fna.gz
@@ -575,9 +577,13 @@
   <br>
   <br>    
   We are now ready to prepare the file needed for primer design for the Fluidigm D3 design portal. The D3 User Guide Instructions can be downloaded [here](https://d3.standardbio.com/account/login).
+  
   <br> 
-  To make the files you need R and R Studio installed on your computer. Once these are installed download the two files in the 'primer_design' directory onto your computer and the script '10_make_primer_file.R'.
+  To make the files you need [R](https://www.r-project.org) and [R Studio](https://posit.co/download/rstudio-desktop/) installed on your computer. 
+  <br> 
+  Once these are installed download the two files in the 'primer_design' directory onto your computer and the script '10_make_primer_file.R'.
   You can then use the '10_make_primer_file.R' script to make the final output file for SNP design. Follow the instructions contained in the R script to update the names of your files. 
+  <br> 
   You should now be ready to submit the final file for primer design.
   
   </details>
@@ -587,6 +593,7 @@
   <br>
   <br>    
    First make an account for the [D3 design portal](https://d3.standardbio.com/account/login).
+   <br> 
    I recommend you read through the D3 User Guide you downloaded in the previous step but the steps are summarised below.
    
    - Log into your account on the D3 portal. 
