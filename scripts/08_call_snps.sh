@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#SBATCH --job-name=06_alignment
-#SBATCH --output=06_alignment.log
+#SBATCH --job-name=08_call_snps
+#SBATCH --output=08_call_snps.log
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=20
+#SBATCH --cpus-per-task=1
 #SBATCH -A molecolb
 #SBATCH -p molecolb
-#SBATCH --mem-per-cpu=4GB
-#SBATCH --time=72:00:00
+#SBATCH --mem-per-cpu=16GB
+#SBATCH --time=48:00:00
 
 source ~/.bash_profile
 

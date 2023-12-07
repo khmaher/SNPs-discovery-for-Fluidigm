@@ -1,84 +1,133 @@
 #!/bin/bash
 
-#Settings for the Sun Grid Engine
+#SBATCH --job-name=09_filter_vcf
+#SBATCH --output=09_filter_vcf.log
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH -A molecolb
+#SBATCH -p molecolb
+#SBATCH --mem-per-cpu=16GB
+#SBATCH --time=07:00:00
 
-# run time for job in hours:mins:sec (max 168:0:0, jobs with h_rt < 8:0:0 have priority)
+source ~/.bash_profile
 
-#$ -l h_rt=07:59:59
+helpFunction()
+{
+   echo ""
+   echo "Usage: $0 -o parameterO -r parameterR -q parameterQ -i parameterI -m parameterM -a parameterA -g parameterN -g parameterG"
+   echo -e "\t-g Description of what is parameterO"
+   echo -e "\t-o Description of what is parameterR"
+   echo -e "\t-o Description of what is parameterQ"
+   echo -e "\t-o Description of what is parameterI"
+   echo -e "\t-o Description of what is parameterM"
+   echo -e "\t-o Description of what is parameterA"
+   echo -e "\t-o Description of what is parameterN"
+   echo -e "\t-o Description of what is parameterG"
+   exit 1 # Exit script after printing help
+}
 
-#$ -pe openmp 1
+while getopts "o:r:q:i:m:a:n:g:" opt
+do
+   case "$opt" in
+      o ) parameterO="$OPTARG" ;;
+      r ) parameterR="$OPTARG" ;;
+      q ) parameterQ="$OPTARG" ;;
+      i ) parameterI="$OPTARG" ;;
+      m ) parameterM="$OPTARG" ;;
+      a ) parameterA="$OPTARG" ;;
+      n ) parameterN="$OPTARG" ;;
+      g ) parameterG="$OPTARG" ;;
+      ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
+   esac
+done
 
-# request memory for job (default 2G, max 256G)
-
-#$ -l rmem=24G
-
-#$ -q evolgen.q
-
-#$ -P evolgen
-
-# give the job a name (optional):
-
-#$-N filter_snps
+# Print helpFunction in case parameters are empty
+if [ -z "$parameterO" ]|| [ -z "$parameterR" ]|| [ -z "$parameterQ" ]|| [ -z "$parameterI" ]|| [ -z "$parameterM" ]|| [ -z "$parameterA" ]|| [ -z "$parameterN" ] || [ -z "$parameterG" ]
+then
+   echo "Some or all of the parameters are empty";
+   helpFunction
+fi
 
 
+#minimum number of reads $parameterR
+#quality threshold $parameterQ
+#number of individuals $parameterI
+#MAF $parameterM
+#remove sites with an average genotype depth higher than X $parameterA
+#Number of SNPs to pull out
+# genome name $parameterG
 
-cd /fastdata/bo4kma/monkparakeet/vcf
+
+
+src=$PWD
+
+mkdir $src/primer_design
+
+cd $src/vcf
 
 # index vcf
 
-bcftools index monkparakeet.vcf.gz
+bcftools index $parameterO.vcf.gz
 
 # keep only biallelic SNPs
 
-bcftools view -v snps -m 2 -M 2 monkparakeet.vcf.gz -O z > monkparakeet_bi_snps.vcf.gz
+bcftools view -v snps -m 2 -M 2 $src/vcf/$parameterO.vcf.gz -O z > $src/vcf/$parameterO_bi_snps.vcf.gz
 
 # index new file
 
-bcftools index monkparakeet_bi_snps.vcf.gz
+bcftools index $parameterO_bi_snps.vcf.gz
 
 
 # filter vcf file
 
-# exclude SNP calls informed by less than 3 reads
-# exclude SNPs below a quality threshold of 20
-# exclude SNPs genotyped for less than 4 individuals
-bcftools filter -S . -e 'FMT/DP<3' monkparakeet_bi_snps.vcf.gz | \
-bcftools view -e 'QUAL<20 || AN/2<4' -O z > \
-monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.vcf.gz
+# exclude SNP calls informed by less than X reads
+# exclude SNPs below a quality threshold of X
+# exclude SNPs genotyped for less than X individuals
+bcftools filter -S . -e 'FMT/DP<$parameterR' $src/vcf/$parameterO_bi_snps.vcf.gz | \
+bcftools view -e 'QUAL<$parameterQ || AN/2<$parameterI' -O z > \
+$src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.vcf.gz
 
 # index new file
 
-bcftools index monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.vcf.gz 
+bcftools index $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.vcf.gz 
 
-# filter to remove SNPs with a MAF lower than 0.25
+# filter to remove SNPs with a MAF lower than X
 
-bcftools view -e 'MAF<0.25' -O z monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.vcf.gz > monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.25.vcf.gz
+bcftools view -e 'MAF<$parameterM' -O z $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.vcf.gz > $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterM.vcf.gz
 
-# keep only SNPs with a MAF=0.5
-bcftools view -i 'MAF=0.5' -O z monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.vcf.gz > monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.vcf.gz
-bcftools index monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.vcf.gz
+# filter to remove sites with an average genotype depth higher than X
+bcftools view -e 'AVG(FMT/DP)>$parameterA' -O z $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.vcf.gz > $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.vcf.gz
+bcftools index $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.vcf.gz
+
 
 # find only SNPs including at least one hom for ref, one hom for alt and one het
-bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.vcf.gz | less -S \
-| awk '/0\/0/ && /1\/1/ && /0\/1/ && /0\/1/' > homref_homalt_het.txt
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.vcf.gz | less -S \
+| awk '/0\/0/ && /1\/1/ && /0\/1/ && /0\/1/' > $src/vcf/homref_homalt_het.txt
 
 # find only sites including at least one hom for ref, one hom for alt and one het - just chrom and site info
-bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.vcf.gz | less -S \
-| awk '/0\/0/ && /1\/1/ && /0\/1/ && /0\/1/' |awk '{ printf "%5s\t%s\n", $1, $2 }' > sites_homref_homalt_het.txt 
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.vcf.gz | less -S \
+| awk '/0\/0/ && /1\/1/ && /0\/1/ && /0\/1/' |awk '{ printf "%5s\t%s\n", $1, $2 }' > $src/vcf/sites_homref_homalt_het.txt 
 
 # filter to keep sites based on list created above
-bcftools view -O z -R sites_homref_homalt_het.txt monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.vcf.gz > monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.homref.alt.het.vcf.gz
-bcftools index monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.homref.alt.het.vcf.gz
+bcftools view -O z -R $src/vcf/sites_homref_homalt_het.txt $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.vcf.gz > $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.vcf.gz
+bcftools index $src/vcf/$parameterO_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.homref.alt.het.vcf.gz
 
-# keep only autosomal sites
-bcftools view -O z -r CM029917.1,CM029918.1,CM029919.1,CM029920.1,CM029921.1,CM029922.1,CM029923.1,CM029924.1,CM029925.1,CM029926.1,CM029927.1,CM029928.1,CM029929.1,CM029930.1,CM029931.1,CM029932.1,CM029933.1,CM029934.1,CM029935.1,CM029936.1,CM029937.1,CM029938.1,CM029939.1  monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.homref.alt.het.vcf.gz > monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.homref.alt.het.chrom.vcf.gz
-bcftools index monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.homref.alt.het.chrom.vcf.gz
 
-# randomly sample 108 SNP sites and assign to file
-bcftools view -H monkparakeet_bi_snps.NOGTDP3.Q20.SAMP4.MAF0.5.homref.alt.het.chrom.vcf.gz | shuf -n 108 | awk '{ printf "%5s\t%s\n", $1, $2 }' > 108_SNPs.txt
+# randomly sample X SNP sites and assign to file
+bcftools view -H $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.vcf.gz | shuf -n $parameterN | awk '{ printf "%5s\t%s\n", $1, $2 }' > $src/vcf/$parameterN_SNPs.txt
 
 # minus 250bp and add 250bp for range to make bed file
-awk -v s=250 '{print $1, $2-s, $2+s}' 108_SNPs.txt | sed 's/ /\t/g' > 108_SNPs.bed
+awk -v s=250 '{print $1, $2-s, $2+s}' $src/vcf/$parameterN_SNPs.txt | sed 's/ /\t/g' > $src/vcf/$parameterN_SNPs.bed
 
 # now extract these sequences from genome file
-bedtools getfasta -fi ../genome/GCA_017639245.1_MMon_1.0_genomic.fna -bed 108_SNPs.bed > ../primer_design/108_SNPs.fasta
+bedtools getfasta -fi $src/genome/$parameterG -bed $src/vcf/$parameterN_SNPs.bed > $src/primer_design/$parameterN_SNPs.fasta
+
+# filter to keep sites based on list created above
+bcftools view -O z -R $src/vcf/$parameterN_SNPs.txt $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.vcf.gz > $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.$parameterN.vcf.gz
+bcftools index $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.$parameterN.vcf.gz
+
+# make vcf of X SNP sites and extract info
+bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' $src/vcf/$parameterO_bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.$parameterN.vcf.gz > $src/primer_design/$parameterN_SNPs_info.txt
+
+

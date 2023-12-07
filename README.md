@@ -526,7 +526,7 @@
    <br>
  
   ```  
- qsub 08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz -o name_of_organism -a 20 -b 20
+ qsub 08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz -o monkparakeet -a 20 -b 20
   ```   
   </details>
   <br>
@@ -566,8 +566,8 @@
   <br>    
   We are now ready to prepare the file needed for primer design for the Fluidigm D3 design portal. The D3 User Guide Instructions can be downloaded [here](https://d3.standardbio.com/account/login).
   <br> 
-  To make the files you need R and R Studio installed on your computer. Once these are installed download the two files in the 'primer_design' directory onto your computer and the script 10_make_primer_file.R.
-  You can then use the 10_make_primer_file.R script to make the final output file for SNP design. Follow the instructions contained in the R script to update the names of your files. 
+  To make the files you need R and R Studio installed on your computer. Once these are installed download the two files in the 'primer_design' directory onto your computer and the script '10_make_primer_file.R'.
+  You can then use the '10_make_primer_file.R' script to make the final output file for SNP design. Follow the instructions contained in the R script to update the names of your files. 
   You should now be ready to submit the final file for primer design.
   
   </details>
@@ -588,4 +588,6 @@
    - `Panel Properties - Panel Name`: Give your panel a sensible name -> `FINISH`
    - Click `FILE UPLOAD` -> `choose file` and select the file you just made in R.
    
+ <br><br>   
  
+ Once submitted you will get an email when the primers are designed. 
