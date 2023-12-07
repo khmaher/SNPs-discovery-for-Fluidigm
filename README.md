@@ -483,7 +483,10 @@
    <br>
   ```  
  qsub 07_clean_bam.sh 
-  ```  
+ ```  
+  <br><br>
+  
+   <br>
   We should now have a BAM file with all unmapped reads removed. We can now proceed onto SNP calling.
   </details>
   <br>
