@@ -592,7 +592,7 @@
  <details><summary><font size="6"><b>13) Submit sequence data to the D3 design portal for primer design and generate a quote.</b></font></summary>
   <br>
   <br>    
-   First make an account for the [D3 design portal](https://d3.standardbio.com/account/login).
+   First make an account for the [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) [D3 design portal](https://d3.standardbio.com/account/login).
    <br> 
    I recommend you read through the D3 User Guide you downloaded in the previous step but the steps are summarised below.
    
