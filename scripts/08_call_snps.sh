@@ -50,6 +50,7 @@ src=$PWD
 mkdir $src/vcf
 
 # index genome file for bcftools to use
+gunzip $src/genome/$parameterG
 samtools faidx $src/genome/$parameterG
 
 # Make file of list of bam files

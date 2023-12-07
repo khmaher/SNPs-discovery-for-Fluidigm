@@ -498,6 +498,14 @@
   <br>    
   We are now ready to start our SNP calling. To do this we will use [BCFtools](https://samtools.github.io/bcftools/bcftools.html).
   This SNP calling script first uses 'samtools faidx' to index the genome. This will produce a '.fai' index file.
+  If your genome file is gzipped we first need to unzip this as samtools faidx does not work with gzipped files.
+  <br>  
+  To do this type (where GCA_017639245.1_MMon_1.0_genomic.fna.gz is your genome name):
+  ``` 
+  gunzip GCA_017639245.1_MMon_1.0_genomic.fna.gz
+  ``` 
+  
+  <br>  
     
   <b> You must supply the command line with:</b><br>
   - the name of your reference genome (-g)
@@ -526,7 +534,7 @@
    <br>
  
   ```  
- qsub 08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz -o monkparakeet -a 20 -b 20
+ qsub 08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna -o monkparakeet -a 20 -b 20
   ```   
   </details>
   <br>
@@ -555,7 +563,7 @@
   <br>
   
   ```
-  qsub 09_filter_vcf.sh -r 3 -q 20 -i 2 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
+  qsub 09_filter_vcf.sh -r 3 -q 20 -i 2 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna
   ```
   </details>
   <br>    
