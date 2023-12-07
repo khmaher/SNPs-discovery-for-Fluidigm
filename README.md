@@ -501,6 +501,8 @@
   If your genome file is gzipped we first need to unzip this as samtools faidx does not work with gzipped files.
   <br>  
   To do this type (where GCA_017639245.1_MMon_1.0_genomic.fna.gz is your genome name):
+  <br>  
+  
   ``` 
   gunzip GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ``` 
