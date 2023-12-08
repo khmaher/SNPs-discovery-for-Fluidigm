@@ -413,8 +413,6 @@
     <br><br>
   An example of how to run 'trimmomatic' can be found below.
  <br><br>
-  
- <br>
 
   ```   
  qsub 04_trimmomatic.sh -f _1.fastq.gz -r _2.fastq.gz \
@@ -557,6 +555,7 @@
  The user then specifies how many SNPs they want to randomly extract from the VCF to take forward for primer design.
  
  <b> You must supply the command line with:</b><br>
+  - the name you want to call your VCF, this should match the name you specified in the previous step (-o)
   - minimum depth needed to retain a SNP site (-r)
   - the minimum quality threshold for a SNP to be retained (all SNPs with a lower quality score will be excluded) (-q)
   - the minimum number of individuals typed to retain a SNP (-i)
@@ -568,7 +567,7 @@
   <br>
   
   ```
-  qsub 09_filter_vcf.sh -r 3 -q 20 -i 2 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna
+  qsub 09_filter_vcf.sh -o monkparakeet -r 3 -q 20 -i 2 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna
   ```
   </details>
   <br>    
