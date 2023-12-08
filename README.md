@@ -335,7 +335,7 @@
  An example file in the format needed for the script to work can be found in the 'scripts' directory called 'SRR_names.txt'.
  
   ``` 
- qsub 02_download_data.sh -f SRR_names.txt
+ qsub 02_download_data.sh -f SRR_names_example.txt
   ```
    <br>
      
@@ -419,7 +419,7 @@
  -k ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:12 \
  -s SLIDINGWINDOW:4:30 \
  -m MINLEN:80
-  ``` 
+ ``` 
   
  </details>
  <br>

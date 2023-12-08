@@ -103,7 +103,7 @@ bcftools index $parameterO.bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameter
 
 # find only SNPs including at least one hom for ref, one hom for alt and one het
 bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' $parameterO.bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.vcf.gz | less -S \
-| awk '/0\/0/ && /1\/1/ && /0\/1/ && /0\/1/' > $src/vcf/homref_homalt_het.txt
+| awk '/0\/0/ && /1\/1/ && /0\/1/ && /0\/1/' > homref_homalt_het.txt
 
 # find only sites including at least one hom for ref, one hom for alt and one het - just chrom and site info
 bcftools query -f '%CHROM\t%POS\t%REF\t%ALT[\t%GT]\n' $parameterO.bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.vcf.gz | less -S \
@@ -124,7 +124,7 @@ awk -v s=250 '{print $1, $2-s, $2+s}' $parameterN.SNPs.txt | sed 's/ /\t/g' > $p
 bedtools getfasta -fi $src/genome/$parameterG -bed $parameterN.SNPs.bed > $src/primer_design/$parameterN.SNPs.fasta
 
 # filter to keep sites based on list created above
-bcftools view -O z -R $parameterN_SNPs.txt $parameterO.bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.vcf.gz > $parameterO.bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.$parameterN.vcf.gz
+bcftools view -O z -R $parameterN.SNPs.txt $parameterO.bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.vcf.gz > $parameterO.bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.$parameterN.vcf.gz
 bcftools index $parameterO.bi_snps.NOGTDP$parameterR.Q$parameterQ.SAMP$parameterI.$parameterA.homref.alt.het.$parameterN.vcf.gz
 
 # make vcf of X SNP sites and extract info
