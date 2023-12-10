@@ -286,7 +286,8 @@
   ```
  
  When the script has finished running you should have a genome and index files in your genome directory. 
- <b>
+ 
+ <br>
  If you have added your genome to your genome folder manually you can index it by typing the following into the command line.
  
  <br><br>
