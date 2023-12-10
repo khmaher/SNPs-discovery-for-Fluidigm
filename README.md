@@ -394,7 +394,7 @@
   - HEADCROP: Cut the specified number of bases from the start of the read
   - MINLEN: This specifies the minimum length of a read to keep; any reads shorter than 50 bp are discarded.
     <br><br>
-  An example of how to run 'trimmomatic' can be found below.
+  An example of how to run 'trimmomatic' can be found below. Ensure the 'TruSeq3-PE-2.fa' located in the 'scripts' directory is moved to your 'my_project' directory before running this command.
  <br><br>
  
  ```   
