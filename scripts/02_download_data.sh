@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=01_download_genome
+#SBATCH --job-name=02_download_data
 #SBATCH --output=02_download_data.log
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1

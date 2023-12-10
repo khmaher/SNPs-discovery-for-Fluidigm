@@ -368,10 +368,13 @@
   By default this script assumes you are using paired end daya and the phred quality encoding is phred33 (like most Illumina data).
   <br>
   <b>The command line arguments you must supply are:</b><br>
+  
   - the file extension for your forward reads (-f)
   - the file extension for your reverse reads (-r)
   <br><br>
+  
   <b>Optionally, you can also supply:</b><br>
+  
   - parameters for ILLUMINACLIP (-k).
   - parameters for SLIDINGWINDOW (-s)
   - parameters for LEADING (-l)
@@ -382,6 +385,7 @@
   <br><br>
 
   More details of the optional parameters can be found below or in the [trimmomatic manual](http://www.usadellab.org/cms/index.php?page=trimmomatic)
+  
   - ILLUMINACLIP: These settings are used to find and remove Illumina adapters. First, a fasta file of known adapter sequences is given, followed by the number of mismatches allowed between the adapter and read sequence and then thresholds for how accurate the alignment is between the adapter and read sequence.
   - SLIDINGWINDOW: This specifies to scan the read quality over a 4 bp window, cutting when the average quality drops below 30.
   - LEADING: The minimum quality value required to keep a base at the start of the read.
