@@ -465,10 +465,13 @@
  <details><summary><font size="6"><b>9)  Clean BAM files</b></font></summary>
   <br>
   <br>    
- Now we have our BAM files we can use the samtools command flagstat to find information on how the reads mapped. 
+ Now we have our BAM files we can use the samtools command flagstat to find information on how the reads mapped.
+  
  We will then run samtools view to to exclude unmapped reads from our alignment file and then rerun flagstat on the resulting clean BAM file. 
  <br>
+ 
  The flagstat results can be viewed in the directory 'flagstat' and the clean BAM files are in the 'clean_aligned' directory.
+ <br>
  
  To run the BAM cleaning submit the script as below.
   <br><br>
