@@ -272,7 +272,7 @@
   <br>
   This script downloads your genome and then indexes it using [bwa index](https://bio-bwa.sourceforge.net/bwa.shtml) ready for aligning your data later.
     <br><br>
-  To download your genome, submit the '01_download_geome.sh' script as shown below.
+  To download your genome, submit the '01_download_geome.sh' script as shown below. First remember to navigate to your '/fastdata/$USER/my_project' directory
   <br><br>
   <b>The command line arguments you must supply are:</b><br>
   - the download link for your genome (-w)
@@ -280,13 +280,14 @@
   <br><br>
   
   ``` 
- scripts/qsub 01_download_genome.sh \
+ qsub scripts/01_download_genome.sh \
  -w https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/017/639/245/GCA_017639245.1_MMon_1.0/GCA_017639245.1_MMon_1.0_genomic.fna.gz \
  -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ```
  When the script has finished running you should have a genome and index files in your genome directory. 
  <b>
  If you have added your genome to your genome folder manually you can index it by typing the following into the command line.
+ 
  <br><br>
   
   ``` 
@@ -607,11 +608,12 @@
    - Back on the `FILE UPLOAD` page -> `choose file` and select the file you just saved
    - Click `IMPORT`
    - Select the tick box at the top left next to 'Target' column and then click `SUBMIT FOR DESIGN`
-   
  <br><br>   
  Once submitted you will get an email when the primers are designed. 
  <br>
- On the REVIEW DESIGN tab you now archive any targets that failed primer design or are surplus to your required number of SNPs.
+ 
+ On the `REVIEW DESIGN` tab you now archive any targets that failed primer design or are surplus to your required number of SNPs.
  Request a quote.
  <br>
+ 
  You will then get an email when your quote is ready and can proceed to order. Please talk to/email Rachel Tucker (r.tucker@sheffield.ac.uk) for help with ordering.
