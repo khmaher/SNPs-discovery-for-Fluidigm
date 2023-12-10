@@ -284,6 +284,7 @@
  -w https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/017/639/245/GCA_017639245.1_MMon_1.0/GCA_017639245.1_MMon_1.0_genomic.fna.gz \
  -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ```
+ 
  When the script has finished running you should have a genome and index files in your genome directory. 
  <b>
  If you have added your genome to your genome folder manually you can index it by typing the following into the command line.
