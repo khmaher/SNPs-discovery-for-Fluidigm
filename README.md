@@ -621,7 +621,7 @@
    <br> 
    I recommend you read through the D3 User Guide you downloaded in the previous step but the steps are summarised below.
    
-   - Log into your account on the D3 portal. 
+   - Log into your account on the D3 portal 
    - click `+ NEW PANEL`
    - `SNP Type™ Assays - for SNP genotyping` -> `NEXT`
    - `New Panel` -> `NEXT`
@@ -634,6 +634,7 @@
    - Click `IMPORT`
    - Select the tick box at the top left next to 'Target' column and then click `SUBMIT FOR DESIGN`
  <br><br>   
+ 
  Once submitted you will get an email when the primers are designed. 
  <br>
  
