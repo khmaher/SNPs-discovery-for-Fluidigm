@@ -17,15 +17,15 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -f parameterF -r parameterR -k parameterK -s parameterS -l parameterL -t parameterT -c parameterC -h parameterH -m parameterM"
-   echo -e "\t-f Description of what is parameterF"
-   echo -e "\t-r Description of what is parameterR"
-   echo -e "\t-k Description of what is parameterK"
-   echo -e "\t-s Description of what is parameterS"
-   echo -e "\t-l Description of what is parameterL"
-   echo -e "\t-t Description of what is parameterT"
-   echo -e "\t-c Description of what is parameterC"
-   echo -e "\t-h Description of what is parameterH"
-   echo -e "\t-m Description of what is parameterM"
+   echo -e "\t-f the file extension for your forward reads"
+   echo -e "\t-r the file extension for your reverse reads"
+   echo -e "\t-k parameters for ILLUMINACLIP"
+   echo -e "\t-s parameters for SLIDINGWINDOW"
+   echo -e "\t-l parameters for LEADING"
+   echo -e "\t-t parameters for TRAILING"
+   echo -e "\t-c parameters for CROP"
+   echo -e "\t-h parameters for HEADCROP"
+   echo -e "\t-m parameters for MINLEN"
    exit 1 # Exit script after printing help
 }
 

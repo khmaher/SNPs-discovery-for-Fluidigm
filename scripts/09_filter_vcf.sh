@@ -16,14 +16,14 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -o parameterO -r parameterR -q parameterQ -i parameterI -m parameterM -a parameterA -g parameterN -g parameterG"
-   echo -e "\t-g Description of what is parameterO"
-   echo -e "\t-o Description of what is parameterR"
-   echo -e "\t-o Description of what is parameterQ"
-   echo -e "\t-o Description of what is parameterI"
-   echo -e "\t-o Description of what is parameterM"
-   echo -e "\t-o Description of what is parameterA"
-   echo -e "\t-o Description of what is parameterN"
-   echo -e "\t-o Description of what is parameterG"
+   echo -e "\t-g the name you want to call your VCF, this should match the name you specified in the previous step"
+   echo -e "\t-o minimum depth needed to retain a SNP site"
+   echo -e "\t-o the minimum quality threshold for a SNP to be retained (all SNPs with a lower quality score will be excluded"
+   echo -e "\t-o the minimum number of individuals typed to retain a SNP"
+   echo -e "\t-o the MAF"
+   echo -e "\t-o exclude sites where the average genotype depth is below this threshold"
+   echo -e "\t-o number of SNPs to retain for primer design"
+   echo -e "\t-o the name of the genome which was used to align the data"
    exit 1 # Exit script after printing help
 }
 

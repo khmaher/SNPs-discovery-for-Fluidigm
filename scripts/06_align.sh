@@ -16,7 +16,7 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -g parameterG"
-   echo -e "\t-f Description of what is parameterG"
+   echo -e "\t-f the name of your reference genome"
    exit 1 # Exit script after printing help
 }
 

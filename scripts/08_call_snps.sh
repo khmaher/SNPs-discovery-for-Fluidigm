@@ -15,11 +15,11 @@ source ~/.bash_profile
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -g parameterG -o parameterO"
-   echo -e "\t-g Description of what is parameterG"
-   echo -e "\t-o Description of what is parameterO"
-   echo -e "\t-o Description of what is parameterA"
-   echo -e "\t-o Description of what is parameterB"
+   echo "Usage: $0 -g parameterG -o parameterO -a parameterA -b parameterB"
+   echo -e "\t-g the name of your reference genome"
+   echo -e "\t-o the name you want to call your VCF"
+   echo -e "\t-o filter out alignments with mapping quality < the quality specified"
+   echo -e "\t-o filter out bases with QS < the quality specified"
    exit 1 # Exit script after printing help
 }
 
@@ -50,7 +50,6 @@ src=$PWD
 mkdir $src/vcf
 
 # index genome file for bcftools to use
-gunzip $src/genome/$parameterG
 samtools faidx $src/genome/$parameterG
 
 # Make file of list of bam files

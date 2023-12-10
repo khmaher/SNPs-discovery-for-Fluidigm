@@ -17,8 +17,8 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -f parameterF -r parameterR"
-   echo -e "\t-f Description of what is parameterF"
-   echo -e "\t-r Description of what is parameterR"
+   echo -e "\t-f the file extension for your forward reads"
+   echo -e "\t-r the file extension for your reverse reads"
    exit 1 # Exit script after printing help
 }
 

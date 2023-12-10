@@ -13,7 +13,10 @@
   <br>
   <br>
 	
-  Summary of what this protocol is for what it does....  assumes you have a reference genome and short read Illumina sequencing data for WGR (or similar)
+  This guide is for generating the files you need to submit to design primers for SNP typing on the Fluidigm system. 
+
+  It assumes you have a reference genome and short read Illumina sequencing data for aligning and calling SNPs for 
+  3 or more individuals (e.g. WGR or similar).
 
   Whilst this protocol has been written for use with The University of Sheffield's
   [BESSEMER](https://docs.hpc.shef.ac.uk/en/latest/bessemer/index.html) system,
@@ -117,18 +120,13 @@
   
   <font size="4"><b>2.5) Running scripts on the HPC cluster</b></font>
   <br>
-  Several of the scripts in the following workflow consist of two separate shell scripts (file extension: .sh).
-  <br>
-  One script contains the instructions to perform the analysis.
-  <br>
-  The other script submits the job to the high performance computing (HPC) cluster. This script requests resources and adds our job into the queue.
-
-  To add our job to the job scheduler, we would submit the 'submit' shell script using 'qsub'
+  
+  To add our job to the job scheduler, we would submit the shell scripts using 'qsub'
   (don't do this its simply an example).
 
   ```
   ## EXAMPLE, DON'T RUN
-  qsub scripts/example_script_submit.sh
+  qsub scripts/example_script.sh
   ```
 
   We could then view the job that we have submitted to the job queue using 'squeue'.
@@ -141,20 +139,19 @@
   The job will then receive the allocated resources, the task will run, and the appropriate output files generated.
   In the following workflow, since the output from a particular step is often the input for the next step, you need
   to wait for each job to finish before submitting the next.
-  You have the option to provide an email address to receive a notification when each job is complete.
 
 
   <br>
   <font size="4"><b>2.6) Passing command line arguments to a script</b></font>
   <br>
-  As well as running the standardised dada2 scripts there are some parameters which will be unique to you, or
-  your project. For example, these might be your primer sequences or trimming parameters.<br>
+  As well as running the standardised scripts there are some parameters which will be unique to you, or
+  your project. For example, these might be your genome name.<br>
 
   To run a script with these extra parameters (termed 'arguments') we supply them on the command line with a 'flag'.
-  For example, you might supply your email address to a script using the '-E' flag as
+  For example, you might supply your genome file name to a script using the '-g' flag as
 
   ```
-  a_demo_script.sh -E <user>@university.ac.uk
+  a_demo_script.sh -g my_orgamism.fa
   ```
   </details>
   <br>
@@ -198,6 +195,7 @@
   <br>
   <br>
   <font size="4"><b>3.3) Load required data onto the HPC</b></font>
+  <br>
   There are a couple of ways to get access to your data. If you have generated the data/genome
   yourself/through NEOF you will need to copy this over to your raw data folder. 
   
@@ -214,19 +212,19 @@
 
   Alternatively, to copy data from your personal computer onto the HPC you need to use a file transfer
   application such as 'scp' (advanced), MobaXterm, or [FileZilla](https://filezilla-project.org/).
-  Ensure to copy the data into your '/fastdata/<user>my_project/raw_data folder' and genome into 
-  '/fastdata/<user>my_project/genome folder'.
+  Ensure to copy the data into your '/fastdata/<user>my_project/raw_data' folder and genome into 
+  '/fastdata/<user>my_project/genome' folder.
   
-  Another option is to download the data from a data repository such as the [NCBI SRA.](https://www.ncbi.nlm.nih.gov/sra). More on this below.
+  Another option is to download the data from a data repository such as the [NCBI SRA](https://www.ncbi.nlm.nih.gov/sra). More on this below.
 
   Run 'ls' on your 'raw_data' folder and you should see something like the following
   
   ```
   ls raw_data
-  # sample1_S1_R1_001.fq.gz
-  # sample1_S1_R2_001.fq.gz
-  # sample2_S2_R1_001.fq.gz
-  # sample2_S2_R2_001.fq.gz
+  # sample1_R1_001.fq.gz
+  # sample1_R2_001.fq.gz
+  # sample2_R1_001.fq.gz
+  # sample2_R2_001.fq.gz
   ```
   
   Run 'ls' on your 'genome' folder and you should see something like the following
@@ -236,11 +234,9 @@
   # genome.fasta
   ```
   
-  Make sure that you have removed any `tar.gz` files and any files labelled unclassified, e.g. `Unclassified_R1` `Unclassified_R2` 
+  Make sure that you have removed any `tar.gz` files and any files labelled unclassified, e.g. `Unclassified_R1` `Unclassified_R2`. 
   <br>
 
-  <font size="4"><b>3.4) Data file naming convention</b></font>
-  <br>
   The workflow assumes that the '/fastdata/<user>my_project/raw_data' directory contains sequence data that is:
 
   * Paired (two files per biological sample)
@@ -251,42 +247,9 @@
 
   * (optional, but recommended) in the compressed .gz format
 
-  Each pair of files relating to each biological sample should ideally have the following naming convention:
-  <br>
-  <i>(although any convention with consistent naming of R1 and R2 files is acceptable).</i>
-  ```
-  <sample_ID>_S<##>_R1_001.fastq.gz
-
-  <sample_ID>_S<##>_R2_001.fastq.gz
-  ```
-
-  Where \<sample_ID\> is a unique identifier, and S<##> is a sample number (generally assigned by the sequencer itself).
-
-  For example, a pair of files might look like this:
-
-  ```
-  SoilGB_S01_R1_001.fastq.gz
-
-  SoilGB_S01_R2_001.fastq.gz
-  ```
-
-  <br><br>
-  <font size="4"><b>3.5) Automatic detection of file extensions</b></font>
-  <br>
-  The scripts below attempt to determine which are your paired 'R1' files and
-  which are the paired 'R2' files automatically based on their file names. During the
-  first step (N-removal), a log file named something
-  like "01_run_remove_Ns.o2658422" will be generated which contains the automatically
-  detected extensions.
-  <br><br>
-  If the extensions automatically detected are correct, you do not need to do
-  anything. If they are incorrect then you can override the automatic process
-  by specifying the R1 extensions (-W) and the R2 (-P) extensions.
-  <br><br> This automatic detection occurs throughout the workflow but you can
-  specify the extensions at steps where they are required using -W and -P if necessary.
   <br>
   <br>
-  <b><font size="4">3.6) Copy the dada2 R scripts</b></font>
+  <b><font size="4">3.4) Copy the analysis scripts</b></font>
   <br>
   Download the scripts from this github repository and then copy them into your scripts folder. You can then delete the github download.
 
@@ -303,7 +266,11 @@
   <br>
   
   Now we are set up we are ready to start preparing your data. The first thing you want to do is to add your reference genome. 
-  To do this you can use the '01_download_geome.sh' script. This script downloads your genome and then index it using [bwa index](https://bio-bwa.sourceforge.net/bwa.shtml) ready for aligning your data later.
+  <br>
+  If you have not generated the genome file yourself and it is available on a public repository you can use the 
+  '01_download_geome.sh' script. 
+  <br>
+  This script downloads your genome and then indexes it using [bwa index](https://bio-bwa.sourceforge.net/bwa.shtml) ready for aligning your data later.
     <br><br>
   To download your genome, submit the '01_download_geome.sh' script as shown below.
   <br><br>
@@ -318,6 +285,14 @@
  -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ```
  When the script has finished running you should have a genome and index files in your genome directory. 
+ <b>
+ If you have added your genome to your genome folder manually you can index it by typing the following into the command line.
+ <br><br>
+  
+  ``` 
+  source ~/.bash_profile
+  bwa index genome/genome_name.fa
+  ```
  
  </details>
   <br>
@@ -329,13 +304,13 @@
  If you are using publicly available data accessible from the [SRA](https://www.ncbi.nlm.nih.gov/sra) you can use the following script to download this to the HPC.
 
   <b>The command line arguments you must supply are:</b><br>
-  - a file containing a list of SRR names/numbers for the samples you want to download (-f)
+  - a file containing a list of SRR names/numbers for the samples you want to download which should be located in your raw_data folder (-f)
   <br><br>
  
- An example file in the format needed for the script to work can be found in the 'scripts' directory called 'SRR_names.txt'.
+ An example file in the format needed for the script to work can be found in the 'scripts' directory called 'SRR_names_example.txt'.
  
   ``` 
- qsub 02_download_data.sh -f SRR_names_example.txt
+ qsub scripts/02_download_data.sh -f SRR_names_example.txt
   ```
    <br>
      
@@ -360,8 +335,9 @@
   
    <br>
   
+  
   ```   
- qsub 03_fastqc.sh -f _1.fastq.gz -r _2.fastq.gz
+ qsub scripts/03_fastqc.sh -f _1.fastq.gz -r _2.fastq.gz
   ``` 
   
   <br>
@@ -371,7 +347,7 @@
 - The R2 reads have poorer quality than the R1 reads
 - The read sizes have a range compared to all being one size. However, most of the reads are towards the long end of the range.
 
-  Generally, even if data do look very nice we would carry out quality control to get rid of any poor data that is masked by the very good data and to remove any adapter sequences.
+  Generally, even if data is looking good we would carry out quality control to get rid of any poor data that is masked by the very good data and to remove any adapter sequences.
    <br>
    <br>
   In the next step we will carry out quality control for the fastq files. 
@@ -384,10 +360,10 @@
   To carry this out, we are going to use [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic).
 
   
-  <br><br>
+  <br>
   To run Trimmomatic we will use the '04_trimmomatic.sh' script. This has many optional parameters you can use for filtering and trimming your data. 
   By default this script assumes you are using paired end daya and the phred quality encoding is phred33 (like most Illumina data).
-  
+  <br>
   <b>The command line arguments you must supply are:</b><br>
   - the file extension for your forward reads (-f)
   - the file extension for your reverse reads (-r)
@@ -415,7 +391,7 @@
  <br><br>
  
  ```   
- qsub 04_trimmomatic.sh -f _1.fastq.gz -r _2.fastq.gz \
+ qsub scripts/04_trimmomatic.sh -f _1.fastq.gz -r _2.fastq.gz \
  -k ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:12 \
  -s SLIDINGWINDOW:4:30 \
  -m MINLEN:80
@@ -434,7 +410,7 @@
    <br> 
 
   ```   
- qsub 05_fastqc2.sh
+ qsub scripts/05_fastqc2.sh
   ```   
   <br><br>
   If you are not satisfied with the quality or number of reads retained after filtering you can go back to the trimmomatic step and repeat the quality control but changing the parameters.
@@ -447,14 +423,16 @@
   <br>  
  
  We are now ready to map our reads to our reference genome. To do this we will use BWA to align our trimmed sequences to our reference genome.
+ <br>
  We have already indexed our genome when we downloaded it. You should have index files with the  extensions '.sa', '.pac', '.ann', '.amb' and '.bwt' that will be automatically detected and used in the mapping step below. 
  
  bwa mem is an alignment algorithm well suited to Illumina-length sequences. The default output is a SAM (Sequence Alignment Map format). 
  However, here we pipe the output to samtools, a program for writing, viewing and manipulating alignment files, to sort and generate a BAM format, a binary, compressed version of SAM format.
+ <br>
  The following script will first map our paired end data generated from trimmomatic to our reference, it will then combine the single end orphan reads into a single file and map those to the genome. 
  The resulting BAM files are then combined into a single file which will be used in the next step to call SNPs.
  
- <br><br>
+  <br>
   <b>The command line argument you must supply is:</b><br>
   - the name of your reference genome (-g)
    <br><br>
@@ -462,7 +440,7 @@
    <br>
  
   ```   
- qsub 06_align.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
+ qsub scripts/06_align.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ```  
   </details>
   <br>
@@ -473,33 +451,38 @@
   <br>    
  Now we have our BAM files we can use the samtools command flagstat to find information on how the reads mapped. 
  We will then run samtools view to to exclude unmapped reads from our alignment file and then rerun flagstat on the resulting clean BAM file. 
- 
+ <br>
  The flagstat results can be viewed in the directory 'flagstat' and the clean BAM files are in the 'clean_aligned' directory.
  
  To run the BAM cleaning submit the script as below.
   <br><br>
-  
-   <br>
+
   
   ```
-  qsub 07_clean_bam.sh
+  qsub scripts/07_clean_bam.sh
   ```
    
   <br><br>
   
-   <br>
   We should now have a BAM file with all unmapped reads removed. We can now proceed onto SNP calling.
   </details>
   <br>
   
  <details><summary><font size="6"><b>10) Call SNPs</b></font></summary>
   <br>
-  <br>    
+  <br>   
+   
   We are now ready to start our SNP calling. To do this we will use [BCFtools](https://samtools.github.io/bcftools/bcftools.html).
+  
+  <br>
+  
   This SNP calling script first uses 'samtools faidx' to index the genome. This will produce a '.fai' index file.
+  
   <br> 
+  
   If your genome file is gzipped we first need to unzip this as samtools faidx does not work with gzipped files.
-  <br>  
+  <br> 
+   
   To do this type (where GCA_017639245.1_MMon_1.0_genomic.fna.gz is your genome name):
   <br>  
   <br> 
@@ -520,7 +503,7 @@
   - -P ILLUMINA: use Illumina platform for indels
   - -a FORMAT/DP,FORMAT/AD: output depth and allelic depth
   <br><br>
-  <b>The command line argument you can specify are:</b><br>
+  <b>The command line argument you must specify are:</b><br>
   - filter out alignments with mapping quality < the quality specified (-a)
   - filter out bases with QS < the quality specified (-b)
   <br><br>
@@ -537,7 +520,7 @@
    <br>
  
   ```  
- qsub 08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna -o monkparakeet -a 20 -b 20
+ qsub scripts/08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna -o monkparakeet -a 20 -b 20
   ```   
   </details>
   <br>
@@ -546,28 +529,34 @@
   <br>
   <br>    
  The next step is to clean the VCF so we retain only high quality SNP sites we can be confident in.
+ <br> 
  
- The following script keeps only biallelic SNPs. It then filters to remove SNPs informed by less than a user specified number of reads, quality threshold and genotyped for less than a specified number of individuals.
- Users pick a frequency in which to remove variants below a certain allele frequency, as these ones are difficult to tell apart from sequencing errors.
- Remove sites with an average genotype depth higher than a user specified number.
- To keep only the most diverse SNP sites we also filter to keep only sites which have called at least one individual that is homozygous for the reference, one that is homozygous for the alternate and one heterozygous individual.
+ - The following script keeps only biallelic SNPs. 
+ - It then filters to remove SNPs informed by less than a user specified number of reads, 
+ quality threshold and genotyped for less than a specified number of individuals.
+ - Users pick a frequency in which to remove variants below a certain allele frequency, 
+ as these ones are difficult to tell apart from sequencing errors.
+ - Remove sites with an average genotype depth higher than a user specified number.
+ - To keep only the most diverse SNP sites we also filter to keep only sites which have called at least one individual 
+ that is homozygous for the reference, one that is homozygous for the alternate and one heterozygous individual.
  <br>  
+ 
  The user then specifies how many SNPs they want to randomly extract from the VCF to take forward for primer design.
  
  <b> You must supply the command line with:</b><br>
   - the name you want to call your VCF, this should match the name you specified in the previous step (-o)
   - minimum depth needed to retain a SNP site (-r)
-  - the minimum quality threshold for a SNP to be retained (all SNPs with a lower quality score will be excluded) (-q)
+  - the minimum quality threshold for a SNP to be retained (all SNPs with a lower quality score will be excluded (-q)
   - the minimum number of individuals typed to retain a SNP (-i)
   - the MAF (-m)
   - exclude sites where the average genotype depth is below this threshold (-a)
-  - number of SNPs to retain for primer design (-n)
+  - number of SNPs to retain for primer design - I suggest you request at least a third more than you ultimately need for the final genotyping (-n)
   - the name of the genome which was used to align the data (-g)
   <br><br>
   <br>
   
   ```
-  qsub 09_filter_vcf.sh -o monkparakeet -r 3 -q 20 -i 2 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna
+  qsub scripts/09_filter_vcf.sh -o monkparakeet -r 3 -q 20 -i 3 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna
   ```
   </details>
   <br>    
@@ -584,9 +573,14 @@
   To make the files you need [R](https://www.r-project.org) and [R Studio](https://posit.co/download/rstudio-desktop/) installed on your computer. 
   
   <br> 
+  
   Once these are installed download the two files in the 'primer_design' directory onto your computer and the script '10_make_primer_file.R'.
-  You can then use the '10_make_primer_file.R' script to make the final output file for SNP design. Follow the instructions contained in the R script to update the names of your files. 
+  You can then use the '10_make_primer_file.R' script to make the final output file for SNP design. 
+  <br>
+  
+  Follow the instructions contained in the R script to update the names of your files. 
   <br> 
+  
   You should now be ready to submit the final file for primer design.
   
   </details>
@@ -608,8 +602,16 @@
    - `Others (Others - none - none)` -> `NEXT`
    - `No SNP Masking` -> `NEXT`
    - `Panel Properties - Panel Name`: Give your panel a sensible name -> `FINISH`
-   - Click `FILE UPLOAD` -> `choose file` and select the file you just made in R.
+   - Click `FILE UPLOAD` -> `DOWNLOAD TEMPLATE`
+   - Open the downloaded file in excel and select the tab at the bottom titled `Targets by Sequence`. Add the name and sequence details from the file you generated in R in the step above to this tab and then save this tab as a text file.
+   - Back on the `FILE UPLOAD` page -> `choose file` and select the file you just saved
+   - Click `IMPORT`
+   - Select the tick box at the top left next to 'Target' column and then click `SUBMIT FOR DESIGN`
    
  <br><br>   
- 
  Once submitted you will get an email when the primers are designed. 
+ <br>
+ On the REVIEW DESIGN tab you now archive any targets that failed primer design or are surplus to your required number of SNPs.
+ Request a quote.
+ <br>
+ You will then get an email when your quote is ready and can proceed to order. Please talk to/email Rachel Tucker (r.tucker@sheffield.ac.uk) for help with ordering.

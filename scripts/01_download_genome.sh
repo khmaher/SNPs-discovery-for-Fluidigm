@@ -18,8 +18,8 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -w parameterW -g parameterG"
-   echo -e "\t-w Description of what is parameterW"
-   echo -e "\t-g Description of what is parameterG"
+   echo -e "\t-w the download link for your genome"
+   echo -e "\t-g the file name for your genome"
    exit 1 # Exit script after printing help
 }
 

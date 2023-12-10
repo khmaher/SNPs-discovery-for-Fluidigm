@@ -18,7 +18,7 @@ helpFunction()
 {
    echo ""
    echo "Usage: $0 -f parameterF"
-   echo -e "\t-f Description of what is parameterF"
+   echo -e "\t-f a file containing a list of SRR names/numbers for the samples you want to download which should be located in your raw_data folder"
    exit 1 # Exit script after printing help
 }
 
