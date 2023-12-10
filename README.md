@@ -329,7 +329,8 @@
   The next step is to check the quality of your fastq files and then perform quality trimming.
   
   First you will run the script to generate the quality plots. This first runs [fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) on each sample separately. 
-  [MultiQC](https://multiqc.info) is then run to generate a combined quality plot. Two MultiQC plots are generated, one for all forward reads and one for reverse reads.
+  [MultiQC](https://multiqc.info) is then run to generate a combined quality plot. Two MultiQC plots are generated, one for all forward reads and one for reverse reads. These 
+  can be found in the 'fastqc' folder when the script has finished running.
   <br><br>
   <b>The command line arguments you must supply are:</b><br>
   - the file extension for your forward reads (-f)
@@ -395,6 +396,9 @@
   - MINLEN: This specifies the minimum length of a read to keep; any reads shorter than 50 bp are discarded.
     <br><br>
   An example of how to run 'trimmomatic' can be found below. Ensure the 'TruSeq3-PE-2.fa' located in the 'scripts' directory is moved to your 'my_project' directory before running this command.
+ 
+  The trimmed files can be found in the 'trim' directory when complete.
+ 
  <br><br>
  
  ```   
@@ -411,7 +415,8 @@
   <br>
   <br> 
 
-  Now we have run trimmomatic we can check how successful our quality control has been but running fastQC and MultiQC again.
+  Now we have run trimmomatic we can check how successful our quality control has been but running fastQC and MultiQC again. These 
+  can be found in the 'fastqc2' folder when the script has finished running.
    <br><br>
   
    <br> 
@@ -449,6 +454,10 @@
   ```   
  qsub scripts/06_align.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ```  
+  
+  <br>
+  When the 06_align.sh has finished running your BAM files will be located in the 'aligned' folder.
+ 
   </details>
   <br>
  
@@ -471,7 +480,7 @@
    
   <br><br>
   
-  We should now have a BAM file with all unmapped reads removed. We can now proceed onto SNP calling.
+  We should now have a BAM file with all unmapped reads removed in the 'clean_aligned' directory. We can now proceed onto SNP calling.
   </details>
   <br>
   
@@ -529,6 +538,9 @@
   ```  
  qsub scripts/08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna -o monkparakeet -a 20 -b 20
   ```   
+  <br>
+  When this script has finished running you should have a vcf file in your 'vcf' folder. 
+  
   </details>
   <br>
   
@@ -565,6 +577,10 @@
   ```
   qsub scripts/09_filter_vcf.sh -o monkparakeet -r 3 -q 20 -i 3 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna
   ```
+  <br>
+  Intermediate filtering files will be written to your 'vcf' folder and final files for primer design will be in a folder titled 'primer_design'.
+  
+  
   </details>
   <br>    
  
