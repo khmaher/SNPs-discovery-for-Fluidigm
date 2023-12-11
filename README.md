@@ -507,7 +507,7 @@
   <br> 
   
   ``` 
-  gunzip GCA_017639245.1_MMon_1.0_genomic.fna.gz
+  gunzip genome/GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ``` 
   
   <br>  
