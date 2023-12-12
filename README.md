@@ -619,7 +619,7 @@
    First make an account for the [D3 design portal](https://d3.standardbio.com/account/login).
    
    <br> 
-   I recommend you read through the D3 User Guide you downloaded in the previous step but the steps are summarised below.
+   I recommend you read through the D3 User Guide you downloaded in the previous step. The key steps are summarised below.
    
    - Log into your account on the D3 portal 
    - click `+ NEW PANEL`
