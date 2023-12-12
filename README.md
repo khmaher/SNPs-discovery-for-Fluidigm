@@ -638,8 +638,17 @@
  Once submitted you will get an email when the primers are designed. 
  <br>
  
- On the `REVIEW DESIGN` tab you now archive any targets that failed primer design or are surplus to your required number of SNPs.
- Request a quote.
+ On the `REVIEW DESIGN` tab you now archive any targets that failed primer design ('Not Designable'), 'Nonstandard', or are surplus to your required number of SNPs.
+ 
+ To do this check the blue tick box to the left of the 'Targets' you wish to remove and then click archive. 
+ 
+ When you are happy with the sites you have selected click on the QUOTE button in the top right.
+ - `PLATE LAYOUT` -> `Default`
+ - `REQUEST QUOTE`
+ - Leave `Promotion Code\Blanket PO#` and `Comments` fields blank
+ - `Volume (SNP Type)` -> click the dropdown menu and select the volume of primer you want to order 
+ - Click `REQUEST QUOTE`.
+ 
  <br>
  
  You will then get an email when your quote is ready and can proceed to order. Please talk to/email Rachel Tucker (r.tucker@sheffield.ac.uk) for help with ordering.
