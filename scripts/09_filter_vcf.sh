@@ -62,7 +62,7 @@ fi
 
 src=$PWD
 
-#mkdir $src/primer_design
+mkdir $src/primer_design
 
 cd $src/vcf
 
