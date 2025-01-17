@@ -254,7 +254,7 @@
   Download the scripts from this github repository and then copy them into your scripts folder. You can then delete the github download.
 
   ```
-  git clone "https://github.com/khmaher/SNPs-discovery-for-Fluidigm"
+  git clone "https://github.com/ewan-harney/SNPs-discovery-for-Fluidigm"
   cp SNPs-discovery-for-Fluidigm/scripts/* /fastdata/$USER/my_project/scripts
   rm -rf SNPs-discovery-for-Fluidigm
   ```
@@ -550,38 +550,54 @@
  <details><summary><font size="6"><b>11) Filter VCF file and extract SNP data</b></font></summary>
   <br>
   <br>    
- The next step is to clean the VCF so we retain only high quality SNP sites we can be confident in.
- <br> 
- 
- - The following script keeps only biallelic SNPs. 
- - It then filters to remove SNPs informed by less than a user specified number of reads, 
- quality threshold and genotyped for less than a specified number of individuals.
- - Users pick a frequency in which to remove variants below a certain allele frequency, 
- as these ones are difficult to tell apart from sequencing errors.
- - Remove sites with an average genotype depth higher than a user specified number.
- - To keep only the most diverse SNP sites we also filter to keep only sites which have called at least one individual 
- that is homozygous for the reference, one that is homozygous for the alternate and one heterozygous individual.
- <br>  
- 
- The user then specifies how many SNPs they want to randomly extract from the VCF to take forward for primer design.
- 
- <b> You must supply the command line with:</b><br>
-  - the name you want to call your VCF, this should match the name you specified in the previous step (-o)
-  - minimum depth needed to retain a SNP site (-r)
-  - the minimum quality threshold for a SNP to be retained (all SNPs with a lower quality score will be excluded (-q)
-  - the minimum number of individuals typed to retain a SNP (-i)
-  - the MAF (-m)
-  - exclude sites where the average genotype depth is below this threshold (-a)
-  - number of SNPs to retain for primer design - I suggest you request at least a third more than you ultimately need for the final genotyping (-n)
-  - the name of the genome which was used to align the data (-g)
-  <br><br>
+ <b> The next step is to clean the VCF so we retain only high quality SNP sites we can be confident in. The script applies the following filters:</b>
+ <br><br>  
+  
+ - Only biallelic SNPs are retained. 
+ - It removes SNPs that are less than 250 bp from the start or end of a contig or chromosome.
+ - It removes SNPs informed by less than a user specified number of reads, quality threshold and genotyped for less than a specified number of individuals.
+ - Users pick a minimum allele frequency (MAF) below which variants will be removed, as these ones are difficult to tell apart from sequencing errors.
+ - Sites are removed if the average genotype depth (across individuals) is greater than X times the average genotype depth (considering all sites), where X is a user specified number number.
+ - To keep only the most diverse SNP sites we also filter to keep only sites which have called at least one individual that is homozygous for the reference, one that is homozygous for the alternate and one heterozygous individual.
+ - Sites are removed if they are highly correlated and adjacent to one another, based on a user-defined correlation coefficient and sliding window length.
+  
+  The user then specifies how many SNPs they want to randomly extract from the VCF to take forward for primer design.
+  <br><br>  
+  
+ <b> You must supply the command line with the 10 following parameters:</b>
+ <br>
+  
+ - (-o) the name you want to call your VCF, this should match the name you specified in the previous step,
+ - (-g) the name of the genome which was used to align the data,
+ - (-r) minimum depth needed to retain a SNP site,
+ - (-q) the minimum quality threshold for a SNP to be retained (all SNPs with a lower quality score will be excluded,
+ - (-i) the minimum number of individuals typed to retain a SNP,
+ - (-m) the minimum allele frequency,
+ - (-a) a multiplier; sites will be excluded when the average genotype depth (per site) is more than this number times greater than the average genotype depth (considering all sites),
+ - (-c) the correlation coefficient R2; sites with an R2 above this value (within a certain window) will be removed, 
+ - (-w) the window for assessing correlation between sites; it can be set to a number of sites with an interger alone, or base pairs by adding bp, kb, or Mb after an integer (without any space),
+ - (-n) number of SNPs to subsample for primer design; it is advisiable to extract more (up to a third more) than will ultimately be needed for the final genotyping,
+  <br>
   <br>
   
   ```
-  qsub scripts/09_filter_vcf.sh -o monkparakeet -r 3 -q 20 -i 3 -m 0.3 -a 20 -n 108 -g GCA_017639245.1_MMon_1.0_genomic.fna
+  qsub scripts/09_filter_vcf.sh -o monkparakeet -g GCA_017639245.1_MMon_1.0_genomic.fna \
+  -r 3 -q 20 -i 3 \
+  -m 0.3 \
+  -a 2 \
+  -c 0.2 -w 5kb \
+  -n 108 
   ```
   <br>
   Intermediate filtering files will be written to your 'vcf' folder and final files for primer design will be in a folder titled 'primer_design'.
+  <br>
+  
+  <br>
+  We recommend looking at the output log ('09_filter_vcf.out.log'). Following each filter, an explanation of the filter, a file name and the total number of remaining SNPs are printed to the log, providing an indication of drop out at each stage. We expect to see a fairly large reduction in the number of SNPs at most stages, but after the final filter (eexclusion of correlated adjacent SNPs) there will hopefully still be several thousand SNPs to choose from. 
+  <br>
+  
+  <br>
+  If the number of SNPs following filtering is less than the subsampling number (-n), subsampling will fail. The log file will produce an error indicating this. If the number of SNPs following filtering is less than two times greater than the subsampling number (-n), subsampling will proceed, but the output log will give a warning and suggest that the user should inspect drop out and relax some filters. The error file (09_filter_vcf.err.log) may provide further information if troubleshooting is required.
   
   
   </details>
