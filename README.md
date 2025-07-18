@@ -539,7 +539,7 @@
    <br>
  
   ```  
- qsub scripts/08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna -o monkparakeet -a 20 -b 20
+ qsub scripts/08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna -o monkparakeet -q 20 -Q 20
   ```   
   <br>
   When this script has finished running you should have a vcf file in your 'vcf' folder. 
