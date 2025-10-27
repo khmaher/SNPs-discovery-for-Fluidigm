@@ -11,6 +11,7 @@
 #SBATCH --time=48:00:00
 
 source ~/.bash_profile
+conda activate snps
 
 src=$PWD
 
