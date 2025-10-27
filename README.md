@@ -121,12 +121,12 @@
   <font size="4"><b>2.5) Running scripts on the HPC cluster</b></font>
   <br>
   
-  To add our job to the job scheduler, we would submit the shell scripts using 'qsub'
+  To add our job to the job scheduler, we would submit the shell scripts using 'sbatch'
   (don't do this its simply an example).
 
   ```
   ## EXAMPLE, DON'T RUN
-  qsub scripts/example_script.sh
+  sbatch scripts/example_script.sh
   ```
 
   We could then view the job that we have submitted to the job queue using 'squeue'.
@@ -280,7 +280,7 @@
   <br><br>
   
   ``` 
- qsub scripts/01_download_genome.sh \
+ sbatch scripts/01_download_genome.sh \
  -w https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/017/639/245/GCA_017639245.1_MMon_1.0/GCA_017639245.1_MMon_1.0_genomic.fna.gz \
  -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ```
@@ -313,7 +313,7 @@
  An example file in the format needed for the script to work can be found in the 'scripts' directory called 'SRR_names_example.txt'.
  
   ``` 
- qsub scripts/02_download_data.sh -f SRR_names_example.txt
+ sbatch scripts/02_download_data.sh -f SRR_names_example.txt
   ```
    <br>
      
@@ -341,7 +341,7 @@
   
   
   ```   
- qsub scripts/03_fastqc.sh -f _1.fastq.gz -r _2.fastq.gz
+ sbatch scripts/03_fastqc.sh -f _1.fastq.gz -r _2.fastq.gz
   ``` 
   
   <br>
@@ -402,7 +402,7 @@
  <br><br>
  
  ```   
- qsub scripts/04_trimmomatic.sh -f _1.fastq.gz -r _2.fastq.gz \
+ sbatch scripts/04_trimmomatic.sh -f _1.fastq.gz -r _2.fastq.gz \
  -k ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:12 \
  -s SLIDINGWINDOW:4:30 \
  -m MINLEN:80
@@ -422,7 +422,7 @@
    <br> 
 
   ```   
- qsub scripts/05_fastqc2.sh
+ sbatch scripts/05_fastqc2.sh
   ```   
   <br><br>
   If you are not satisfied with the quality or number of reads retained after filtering you can go back to the trimmomatic step and repeat the quality control but changing the parameters.
@@ -452,7 +452,7 @@
    <br>
  
   ```   
- qsub scripts/06_align.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
+ sbatch scripts/06_align.sh -g GCA_017639245.1_MMon_1.0_genomic.fna.gz
   ```  
   
   <br>
@@ -478,7 +478,7 @@
 
   
   ```
-  qsub scripts/07_clean_bam.sh
+  sbatch scripts/07_clean_bam.sh
   ```
    
   <br><br>
@@ -539,7 +539,7 @@
    <br>
  
   ```  
- qsub scripts/08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna -o monkparakeet -q 20 -Q 20
+ sbatch scripts/08_call_snps.sh -g GCA_017639245.1_MMon_1.0_genomic.fna -o monkparakeet -q 20 -Q 20
   ```   
   <br>
   When this script has finished running you should have a vcf file in your 'vcf' folder. 
@@ -581,7 +581,7 @@
   <br>
   
   ```
-  qsub scripts/09_filter_vcf.sh -o monkparakeet -g GCA_017639245.1_MMon_1.0_genomic.fna \
+  sbatch scripts/09_filter_vcf.sh -o monkparakeet -g GCA_017639245.1_MMon_1.0_genomic.fna \
   -r 3 -q 20 -i 3 \
   -m 0.3 \
   -a 2 \
