@@ -254,7 +254,7 @@
   Download the scripts from this github repository and then copy them into your scripts folder. You can then delete the github download.
 
   ```
-  git clone "https://github.com/ewan-harney/SNPs-discovery-for-Fluidigm"
+  git clone "https://github.com/khmaher/SNPs-discovery-for-Fluidigm"
   cp SNPs-discovery-for-Fluidigm/scripts/* /mnt/parscratch/users/$USER/my_project/scripts
   rm -rf SNPs-discovery-for-Fluidigm
   ```
