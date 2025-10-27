@@ -6,12 +6,13 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
-#SBATCH -A molecolb
-#SBATCH -p molecolb
+##SBATCH -A molecolb
+##SBATCH -p molecolb
 #SBATCH --mem-per-cpu=16GB
 #SBATCH --time=07:00:00
 
 source ~/.bash_profile
+conda activate snps
 
 helpFunction()
 {
