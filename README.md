@@ -19,7 +19,7 @@
   3 or more individuals (e.g. WGR or similar).
 
   Whilst this protocol has been written for use with The University of Sheffield's
-  [BESSEMER](https://docs.hpc.shef.ac.uk/en/latest/bessemer/index.html) system,
+  [STANAGE](https://docs.hpc.shef.ac.uk/en/latest/stanage/index.html) system,
   the below should be applicable to any GNU/Linux based HPC system, with
   appropriate modification.
 
@@ -46,7 +46,7 @@
   <br>
   <font size="4"><b>2.1) Access the HPC</b></font>
   <br>
-  To access the BESSEMER high-performance computer (HPC) you must be connected
+  To access the STANAGE high-performance computer (HPC) you must be connected
   to the university network - this can be achieved remotely by using the
   virtual private network (VPN) service.
 
@@ -59,9 +59,9 @@
   [See the university pages for guidance on how to connect to the VPN](https://docs.hpc.shef.ac.uk/en/latest/hpc/index.html).
 
   <br>
-  <font size="4"><b>2.2) Access a worker node on BESSEMER</b></font>
+  <font size="4"><b>2.2) Access a worker node on STANAGE</b></font>
   <br>
-  Once you have successfully logged into BESSEMER, you need to access a worker node:
+  Once you have successfully logged into STANAGE, you need to access a worker node:
 
   ```
   srun --pty bash -i
@@ -69,11 +69,11 @@
   You should see that the command prompt has changed from
 
   ```
-  [<user>@bessemer-login2 ~]$
+  [<user>@login2 [stanage] ~]$
   ```
   to
   ```
-  [<user>@bessemer-node001 ~]$
+  [<user>@node002 [stanage] ~]$
   ```
   ...where \<user\> is your The University of Sheffield (TUoS) IT username.
 
@@ -97,7 +97,7 @@
   If so, you are set up and do not need to do the following step.
   If not, enter the following:
   ```
-  echo -e "if [[ -e '/usr/local/extras/Genomics' ]];\nthen\n\tsource /usr/local/extras/Genomics/.bashrc\nfi" >> $HOME/.bash_profile
+  echo -e "if [[ -e '/mnt/community/Genomics' ]];\nthen\n\tsource /mnt/community/Genomics/.bashrc\nfi" >> $HOME/.bash_profile
   ```
   ...and then re-load your profile:
   ```
@@ -109,13 +109,13 @@
   <br>
   <font size="4"><b>2.4) Set up your conda profile</b></font>
   <br>
-  If you have never run conda before on the Bessemer you might have to initialise your conda, to do this type:
+  If you have never run conda before on STANAGE you might have to initialise your conda, to do this type:
   
   ```
   conda init bash
   ```
   
-  You will then be asked to reopen your current shell. Log out and then back into Bessemer and then continue. 
+  You will then be asked to reopen your current shell. Log out and then back into STANAGE and then continue. 
   <br>
   
   <font size="4"><b>2.5) Running scripts on the HPC cluster</b></font>
@@ -161,31 +161,31 @@
   <br>
   <font size="4"><b>3.1) Create a working directory and load your data</b></font>
   <br>
-  You should work in the directory '/fastdata' on BESSEMER as this allows shared access to your files
+  You should work in the directory '/mnt/parscratch/users' on STANAGE as this allows shared access to your files
   and commands, useful for troubleshooting.
 
-  Check if you already have a directory in '/fastdata' by running the command exactly as it appears below.
+  Check if you already have a directory in '/mnt/parscratch/users' by running the command exactly as it appears below.
 
   ```
-  ls /fastdata/$USER
+  ls /mnt/parscratch/users/$USER
   ```
 
   If you receive the message
   ```
-  ls: cannot access /fastdata/<user>: No such file or directory
+  ls: cannot access /mnt/parscratch/users/<user>: No such file or directory
   ```
-  Then you need to create a new folder in '/fastdata' using the command exactly as it appears below:
+  Then you need to create a new folder in '/mnt/parscratch/users' using the command exactly as it appears below:
 
   ```
-  mkdir -m 0755 /fastdata/$USER
+  mkdir -m 0755 /mnt/parscratch/users/$USER
   ```
 
   Create new subdirectories to keep your scripts and raw data organised:
   ```
-  mkdir /fastdata/$USER/my_project
-  mkdir /fastdata/$USER/my_project/scripts
-  mkdir /fastdata/$USER/my_project/raw_data
-  mkdir /fastdata/$USER/my_project/genome
+  mkdir /mnt/parscratch/users/$USER/my_project
+  mkdir /mnt/parscratch/users/$USER/my_project/scripts
+  mkdir /mnt/parscratch/users/$USER/my_project/raw_data
+  mkdir /mnt/parscratch/users/$USER/my_project/genome
   ```
   <br>
   <font size="4"><b>3.2) Required data inputs</b></font>
@@ -206,14 +206,14 @@
   'genome_010123', then you would copy it onto your raw_data and genome directories with the following:
   
   ```
-  cp -r /fastdata/bo4kma_shared/NEOF_project_010122/* /fastdata/$USER/my_project/raw_data/
-  cp -r /fastdata/bo4kma_shared/genome_010123/* /fastdata/$USER/my_project/genome/
+  cp -r /mnt/parscratch/users/bo4kma_shared/NEOF_project_010122/* /mnt/parscratch/users/$USER/my_project/raw_data/
+  cp -r /mnt/parscratch/users/bo4kma_shared/genome_010123/* /mnt/parscratch/users/$USER/my_project/genome/
   ```
 
   Alternatively, to copy data from your personal computer onto the HPC you need to use a file transfer
   application such as 'scp' (advanced), MobaXterm, or [FileZilla](https://filezilla-project.org/).
-  Ensure to copy the data into your '/fastdata/<user>my_project/raw_data' folder and genome into 
-  '/fastdata/<user>my_project/genome' folder.
+  Ensure to copy the data into your '/mnt/parscratch/users/<user>my_project/raw_data' folder and genome into 
+  '/mnt/parscratch/users/<user>my_project/genome' folder.
   
   Another option is to download the data from a data repository such as the [NCBI SRA](https://www.ncbi.nlm.nih.gov/sra). More on this below.
 
@@ -237,7 +237,7 @@
   Make sure that you have removed any `tar.gz` files and any files labelled unclassified, e.g. `Unclassified_R1` `Unclassified_R2`. 
   <br>
 
-  The workflow assumes that the '/fastdata/<user>my_project/raw_data' directory contains sequence data that is:
+  The workflow assumes that the '/mnt/parscratch/users/<user>my_project/raw_data' directory contains sequence data that is:
 
   * Paired (two files per biological sample)
 
@@ -255,7 +255,7 @@
 
   ```
   git clone "https://github.com/ewan-harney/SNPs-discovery-for-Fluidigm"
-  cp SNPs-discovery-for-Fluidigm/scripts/* /fastdata/$USER/my_project/scripts
+  cp SNPs-discovery-for-Fluidigm/scripts/* /mnt/parscratch/users/$USER/my_project/scripts
   rm -rf SNPs-discovery-for-Fluidigm
   ```
    </details>
@@ -272,7 +272,7 @@
   <br>
   This script downloads your genome and then indexes it using [bwa index](https://bio-bwa.sourceforge.net/bwa.shtml) ready for aligning your data later.
     <br><br>
-  To download your genome, submit the '01_download_geome.sh' script as shown below. First remember to navigate to your '/fastdata/$USER/my_project' directory
+  To download your genome, submit the '01_download_geome.sh' script as shown below. First remember to navigate to your '/mnt/parscratch/users/$USER/my_project' directory
   <br><br>
   <b>The command line arguments you must supply are:</b><br>
   - the download link for your genome (-w)
