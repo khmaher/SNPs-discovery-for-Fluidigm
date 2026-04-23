@@ -4,7 +4,7 @@
 #SBATCH --output=04_trimmomatic.log
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=10
 ##SBATCH -A molecolb
 ##SBATCH -p molecolb
 #SBATCH --mem-per-cpu=16GB
@@ -71,7 +71,7 @@ mkdir $src/trim
 for f in $src/raw_data/*$parameterF;
 do FBASE=$(basename $f)
 	BASE=${FBASE%$parameterF}
-	trimmomatic PE -threads 4 -phred33 \
+	trimmomatic PE -threads 10 -phred33 \
 	$src/raw_data/${BASE}$parameterF \
 	$src/raw_data/${BASE}$parameterR \
 	$src/trim/${BASE}_trimmed_paired_R1.fastq.gz \
