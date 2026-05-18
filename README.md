@@ -667,4 +667,4 @@
  
  <br>
  
- You will then get an email when your quote is ready and can proceed to order. Please talk to/email Rachel Tucker (r.tucker@sheffield.ac.uk) for help with ordering.
+ You will then get an email when your quote is ready and can proceed to order. Please talk to/email Rachel Patel (rachel.patel@sheffield.ac.uk) for help with ordering.
